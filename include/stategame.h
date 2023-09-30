@@ -2,6 +2,7 @@
 
 #include "iState.h"
 #include "ball.h"
+#include "wall.h"
 
 namespace InkBall::State {
     class GameState : public IState {
@@ -14,5 +15,7 @@ namespace InkBall::State {
 
     private:
         Entities::Ball* _ball;
+        Entities::Wall* _wall;
+        //std::vector<Entities::Wall*> _walls;
     };
 }

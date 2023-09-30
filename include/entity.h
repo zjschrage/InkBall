@@ -8,6 +8,8 @@ namespace InkBall::Entities {
     class Entity : public sf::Drawable {
     public:
         Entity(sf::Vector2<int> position);
+        const sf::Vector2<int>& getPosition() { return _position; }
+        const sf::IntRect& getHitbox() { return _hitbox; }
 
     protected:
         sf::Vector2<int> _position;

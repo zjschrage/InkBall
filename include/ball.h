@@ -9,7 +9,8 @@ namespace InkBall::Entities {
     public:
         Ball(sf::Vector2<int> position);
         void move() override;
-        void recalculateHitbox() override;
+    private:
+        void recalculateHitbox();
     };
 
 }

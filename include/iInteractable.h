@@ -6,7 +6,7 @@ namespace InkBall::Entities {
 
     class IInteractable {
     public:
-        virtual void interact() = 0;
+        virtual void interact(Entity& entity) = 0;
 
     private:
     };
