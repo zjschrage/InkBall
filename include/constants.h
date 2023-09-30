@@ -9,6 +9,7 @@ namespace InkBall::Constants {
         const int SCALE = 3;
         const int SS_TILE_SIZE = 24;
         const sf::IntRect WHITE_BALL = sf::IntRect(1, 375, SS_TILE_SIZE, SS_TILE_SIZE);
+        const sf::IntRect WHITE_TILE = sf::IntRect(99, 1, SS_TILE_SIZE, SS_TILE_SIZE);
     }
 
     namespace General {
