@@ -7,7 +7,6 @@
 namespace InkBall::State {
     class GameState : public IState {
     public:
-        GameState() { init(); }
         void init() override;
         void tick() override;
         void render(sf::RenderWindow& window) override;
@@ -15,7 +14,6 @@ namespace InkBall::State {
 
     private:
         Entities::Ball* _ball;
-        Entities::Wall* _wall;
-        //std::vector<Entities::Wall*> _walls;
+        std::vector<Entities::Wall*> _walls;
     };
 }

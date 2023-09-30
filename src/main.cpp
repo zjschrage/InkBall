@@ -15,7 +15,8 @@ int main() {
 
     auto state = std::make_unique<State::GameState>();
     Singleton<State::IState>::set(std::move(state));
-
+    Singleton<State::IState>::get().init();
+    
     while (window.isOpen()) {
         Singleton<State::IState>::get().handleEvents(window);
         Singleton<State::IState>::get().tick();
