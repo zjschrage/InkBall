@@ -2,6 +2,9 @@
 #include "constants.h"
 #include "statics.h"
 #include "ball.h"
+#include "singleton.h"
+#include "iState.h"
+#include "stategame.h"
 
 using namespace InkBall;
 
@@ -10,32 +13,13 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(1000, 1000), "InkBall");
     window.setFramerateLimit(Constants::General::FPS);
 
-    Entities::Ball* ball = new Entities::Ball(sf::Vector2(500, 500));
-    ball->setVelocity(sf::Vector2(-2, 2));
-    
+    auto state = std::make_unique<State::GameState>();
+    Singleton<State::IState>::set(std::move(state));
+
     while (window.isOpen()) {
-
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
-            if (event.type == sf::Event::KeyPressed) {
-                switch (event.key.code) {
-                    case sf::Keyboard::F3:
-                        Statics::SHOW_HITBOX = !Statics::SHOW_HITBOX;
-                        break;
-                    case sf::Keyboard::F4:
-                        Statics::SHOW_CENTER = !Statics::SHOW_CENTER;
-                        break;
-                }
-            }
-        }
-
-        ball->move();
-
-        window.clear();
-        window.draw(*ball);
-        window.display();
+        Singleton<State::IState>::get().handleEvents(window);
+        Singleton<State::IState>::get().tick();
+        Singleton<State::IState>::get().render(window);
     }
 
     return 0;
