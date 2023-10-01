@@ -11,6 +11,8 @@ namespace InkBall::Constants {
         const int TILE_SIZE = 32;
         const sf::IntRect WHITE_BALL = sf::IntRect(1, 375, BALL_TILE_SIZE, BALL_TILE_SIZE);
         const sf::IntRect WHITE_TILE = sf::IntRect(99, 1, TILE_SIZE, TILE_SIZE);
+        const sf::IntRect EMPTY_TILE = sf::IntRect(1, 1, TILE_SIZE, TILE_SIZE);
+        const sf::IntRect DISPENSER_TILE = sf::IntRect(1, 33, TILE_SIZE, TILE_SIZE);
     }
 
     namespace Map {

@@ -22,4 +22,13 @@ namespace InkBall::Entities {
 
     };
 
+    enum Color {
+        EMPTY,
+        WHITE,
+        ORANGE,
+        BLUE,
+        GREEN,
+        MAGENTA
+    };
+
 }

@@ -40,7 +40,7 @@ namespace InkBall::World {
     static Tile* charToTile(Coordinate cord, char c) {
         switch (c) {
             case 'X':
-                return new Tile(cord, new Entities::Wall(coordinateToPosition(cord)));
+                return new Tile(cord, new Entities::Wall(coordinateToPosition(cord), Entities::Color::WHITE));
             case '0':
             default:
                 return new Tile(cord);

@@ -6,8 +6,14 @@
 namespace InkBall::State {
 
     void GameState::init() {
-        _ball = new Entities::Ball(sf::Vector2(500, 500));
-        _ball->setVelocity(sf::Vector2(-3, 3));
+        auto ball0 = new Entities::Ball(sf::Vector2(500, 500));
+        ball0->setVelocity(sf::Vector2(-3, 3));
+
+        auto ball1 = new Entities::Ball(sf::Vector2(400, 300));
+        ball1->setVelocity(sf::Vector2(4, -3));
+
+        _balls.push_back(ball0);
+        _balls.push_back(ball1);
 
         _map = World::LevelLoader::loadLevel(0);
 
@@ -32,13 +38,17 @@ namespace InkBall::State {
     }
 
     void GameState::tick() {
-        _ball->move();
+        for (auto ball : _balls) {
+            ball->move();
+        }
         for (auto tileRow : _map.getMap()) {
             for (auto tile : tileRow) {
                 if (tile->hasEntity()) {
                     Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(tile->getEntity());
                     if (interactable) {
-                        interactable->interact(*_ball);
+                        for (auto ball : _balls) {
+                            interactable->interact(*ball);
+                        }
                     }
                 }
             }
@@ -47,7 +57,9 @@ namespace InkBall::State {
 
     void GameState::render(sf::RenderWindow& window) {
         window.clear();
-        window.draw(*_ball);
+        for (auto ball : _balls) {
+            window.draw(*ball);
+        }
         for (auto tileRow : _map.getMap()) {
             for (auto tile : tileRow) {
                 if (tile->hasEntity()) {

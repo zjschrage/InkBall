@@ -15,7 +15,6 @@ namespace InkBall::State {
 
     private:
         World::Map _map;
-        Entities::Ball* _ball;
-        std::vector<Entities::Wall*> _walls;
+        std::vector<Entities::Ball*> _balls;
     };
 }
