@@ -1,4 +1,6 @@
+#include <SFML/Graphics.hpp>
 #include "coordinate.h"
+#include "constants.h"
 
 namespace InkBall::World {
 
@@ -10,6 +12,17 @@ namespace InkBall::World {
             }
         }
         return coordinates;
+    }
+
+    sf::Vector2<int> coordinateToPosition(Coordinate c) {
+        int scale = Constants::General::HITBOX_DIM;
+        int x = c.x * scale + scale/2;
+        int y = c.y * scale + scale/2;
+        return sf::Vector2<int>(x, y);
+    }
+
+    Coordinate positionToCoordinate(sf::Vector2<int> c) {
+        return Coordinate(0, 0);
     }
     
 }

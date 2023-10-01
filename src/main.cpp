@@ -10,7 +10,7 @@ using namespace InkBall;
 
 int main() {
 
-    sf::RenderWindow window(sf::VideoMode(1000, 1000), "InkBall");
+    sf::RenderWindow window(sf::VideoMode(Constants::General::WINDOW_SIZE, Constants::General::WINDOW_SIZE), Constants::General::WINDOW_TITLE);
     window.setFramerateLimit(Constants::General::FPS);
 
     auto state = std::make_unique<State::GameState>();

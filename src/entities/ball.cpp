@@ -4,7 +4,7 @@
 
 namespace InkBall::Entities {
 
-    Ball::Ball(sf::Vector2<int> position) : Entity(position) {
+    Ball::Ball(sf::Vector2<int> position) : Entity(position, Constants::General::BALL_HITBOX_DIM) {
         _texture.loadFromFile(Constants::SprtSheet::SPRITESHEET_PATH, Constants::SprtSheet::WHITE_BALL);
         _sprite.setTexture(_texture);
     }
@@ -16,7 +16,7 @@ namespace InkBall::Entities {
     }
 
     void Ball::recalculateHitbox() {
-        int d = Constants::General::HITBOX_DIM;
+        int d = Constants::General::BALL_HITBOX_DIM;
         _hitbox = sf::IntRect(_position.x - d/2, _position.y - d/2, d, d);
         _sprite.setPosition(_position.x - d/2, _position.y - d/2);
     }

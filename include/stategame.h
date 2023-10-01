@@ -3,6 +3,7 @@
 #include "iState.h"
 #include "ball.h"
 #include "wall.h"
+#include "map.h"
 
 namespace InkBall::State {
     class GameState : public IState {
@@ -13,6 +14,7 @@ namespace InkBall::State {
         void handleEvents(sf::RenderWindow& window) override;
 
     private:
+        World::Map _map;
         Entities::Ball* _ball;
         std::vector<Entities::Wall*> _walls;
     };

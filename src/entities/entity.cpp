@@ -4,8 +4,7 @@
 
 namespace InkBall::Entities {
 
-    Entity::Entity(sf::Vector2<int> position) {
-        int d = Constants::General::HITBOX_DIM;
+    Entity::Entity(sf::Vector2<int> position, int d) {
         _position = position;
         _hitbox = sf::IntRect(position.x - d/2, position.y - d/2, d, d);
         _sprite.setPosition(position.x - d/2, position.y - d/2);

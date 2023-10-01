@@ -9,10 +9,13 @@ namespace InkBall::World {
 
     class Tile {
     public:
-        Tile();
+        Tile(Coordinate c) : _coordinate(c), _entity(std::nullopt) {}
+        Tile(Coordinate c, Entities::Entity* e) : _coordinate(c), _entity(e) {}
+        bool hasEntity();
+        Entities::Entity* getEntity();
         
     private:
-        std::optional<Entities::Entity> _entity;
+        std::optional<Entities::Entity*> _entity;
         Coordinate _coordinate;
 
     };

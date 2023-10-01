@@ -1,17 +1,16 @@
 #include "stategame.h"
 #include "statics.h"
-#include "ball.h"
+#include "levelLoader.h"
+#include "iInteractable.h"
 
 namespace InkBall::State {
 
     void GameState::init() {
         _ball = new Entities::Ball(sf::Vector2(500, 500));
-        _ball->setVelocity(sf::Vector2(-2, 2));
+        _ball->setVelocity(sf::Vector2(-3, 3));
 
-        auto* wall1 = new Entities::Wall(sf::Vector2(300, 700));
-        auto* wall2 = new Entities::Wall(sf::Vector2(700, 300));
-        _walls.push_back(wall1);
-        _walls.push_back(wall2);
+        _map = World::LevelLoader::loadLevel(0);
+
     }
 
     void GameState::handleEvents(sf::RenderWindow& window) {
@@ -34,16 +33,27 @@ namespace InkBall::State {
 
     void GameState::tick() {
         _ball->move();
-        for (auto* wall : _walls) {
-            wall->interact(*_ball);
+        for (auto tileRow : _map.getMap()) {
+            for (auto tile : tileRow) {
+                if (tile->hasEntity()) {
+                    Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(tile->getEntity());
+                    if (interactable) {
+                        interactable->interact(*_ball);
+                    }
+                }
+            }
         }
     }
 
     void GameState::render(sf::RenderWindow& window) {
         window.clear();
         window.draw(*_ball);
-        for (auto& wall : _walls) {
-            window.draw(*wall);
+        for (auto tileRow : _map.getMap()) {
+            for (auto tile : tileRow) {
+                if (tile->hasEntity()) {
+                    window.draw(*tile->getEntity());
+                }
+            }
         }
         window.display();
     }
