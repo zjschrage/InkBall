@@ -4,6 +4,8 @@
 
 namespace InkBall::Entities {
 
+    static bool isLateralHit(const sf::Vector2<int>& pA, const sf::Vector2<int>& pB);
+
     Wall::Wall(sf::Vector2<int> position) : Entity(position, Constants::General::HITBOX_DIM) {
         _texture.loadFromFile(Constants::SprtSheet::SPRITESHEET_PATH, Constants::SprtSheet::WHITE_TILE);
         _sprite.setTexture(_texture);
@@ -14,12 +16,19 @@ namespace InkBall::Entities {
         if (mobile) {
             if (_hitbox.intersects(entity.getHitbox())) {
                 auto velocity = mobile->getVelocity();
-                mobile->setVelocity(-velocity.x, -velocity.y);
+                if (isLateralHit(_position, entity.getPosition()))
+                    mobile->setVelocity(-velocity.x, velocity.y);
+                else
+                    mobile->setVelocity(velocity.x, -velocity.y);
             }
             while (_hitbox.intersects(entity.getHitbox())) {
                 mobile->move();
             }
         }
+    }
+
+    static bool isLateralHit(const sf::Vector2<int>& pA, const sf::Vector2<int>& pB) {
+        return abs(pA.x - pB.x) > abs(pA.y - pB.y);
     }
 
 }
