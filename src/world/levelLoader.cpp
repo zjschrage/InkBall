@@ -33,7 +33,7 @@ namespace InkBall::World {
 
     static void processLine(Map& map, const std::string& line, int row) {
         for(int i = 0; i < Constants::Map::MAP_SIZE; i++) {
-            map.setTile(row, i, charToTile(Coordinate(row, i), line[i]));
+            map.setTile(i, row, charToTile(Coordinate(i, row), line[i]));
         }
     }
 
