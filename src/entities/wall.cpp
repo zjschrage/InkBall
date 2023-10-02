@@ -4,14 +4,6 @@
 
 namespace InkBall::Entities {
 
-    enum HitType {
-        Lateral,
-        TopBottom,
-        Corner
-    };
-
-    static HitType isLateralHit(const sf::Vector2<int>& pA, const sf::Vector2<int>& pB);
-
     Wall::Wall(sf::Vector2<int> position, Color color) : Entity(position, Constants::General::HITBOX_DIM) {
         _texture.loadFromFile(Constants::SprtSheet::SPRITESHEET_PATH, colorToSheetMapping(color));
         _sprite.setTexture(_texture);
@@ -41,13 +33,6 @@ namespace InkBall::Entities {
             case Color::WHITE:
                 return Constants::SprtSheet::WHITE_TILE;
         }
-    }
-
-    static HitType isLateralHit(const sf::Vector2<int>& pA, const sf::Vector2<int>& pB) {
-        int dx = abs(pA.x - pB.x);
-        int dy = abs(pA.y - pB.y);
-        if (dx == dy) return HitType::Corner;
-        return (dx > dy) ? HitType::Lateral : HitType::TopBottom;
     }
 
 }

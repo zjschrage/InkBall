@@ -21,4 +21,29 @@ namespace InkBall::Entities {
         _sprite.setPosition(_position.x - d/2, _position.y - d/2);
     }
 
+    void Ball::interact(Entity& entity) {
+        IMobile* mobile = dynamic_cast<IMobile*>(&entity);
+        if (mobile) {
+            if (_hitbox.intersects(entity.getHitbox())) {
+                auto velocity = mobile->getVelocity();
+                HitType hitType = isLateralHit(_position, entity.getPosition());
+                if (hitType == HitType::Lateral) {
+                    mobile->setVelocity(-velocity.x, velocity.y);
+                    this->setVelocity(-velocity.x, velocity.y);
+                }
+                else if (hitType == HitType::TopBottom) {
+                    mobile->setVelocity(velocity.x, -velocity.y);
+                    this->setVelocity(velocity.x, -velocity.y);
+                }
+                else {
+                    mobile->setVelocity(-velocity.x, -velocity.y);
+                    this->setVelocity(-velocity.x, -velocity.y);
+                }
+            }
+            while (_hitbox.intersects(entity.getHitbox())) {
+                mobile->move();
+            }
+        }
+    }
+
 }
