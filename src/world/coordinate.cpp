@@ -22,7 +22,8 @@ namespace InkBall::World {
     }
 
     Coordinate positionToCoordinate(sf::Vector2<int> c) {
-        return Coordinate(0, 0);
+        int scale = Constants::General::HITBOX_DIM;
+        return Coordinate(c.x / scale, c.y / scale);
     }
     
 }

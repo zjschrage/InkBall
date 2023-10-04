@@ -12,8 +12,12 @@ namespace InkBall::State {
         auto ball1 = new Entities::Ball(sf::Vector2(400, 300));
         ball1->setVelocity(sf::Vector2(4, -3));
 
+        auto ball3 = new Entities::Ball(sf::Vector2(450, 200));
+        ball3->setVelocity(sf::Vector2(-2, -5));
+
         _balls.push_back(ball0);
         _balls.push_back(ball1);
+        _balls.push_back(ball3);
 
         _map = World::LevelLoader::loadLevel(0);
 
@@ -38,17 +42,25 @@ namespace InkBall::State {
     }
 
     void GameState::tick() {
-        for (auto ball : _balls) {
+        for (auto* ball : _balls) {
+            World::Coordinate oldPosition = World::positionToCoordinate(ball->getPosition());
             ball->move();
-        }
-        for (auto tileRow : _map.getMap()) {
-            for (auto tile : tileRow) {
-                if (tile->hasEntity()) {
-                    Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(tile->getEntity());
+            World::Coordinate newPosition = World::positionToCoordinate(ball->getPosition());
+            if (oldPosition != newPosition) {
+                _map.getMap()[oldPosition.x][oldPosition.y]->removeMovingEntity(ball);
+                _map.getMap()[newPosition.x][newPosition.y]->addMovingEntity(ball);
+            }
+            for (auto cord : newPosition.getNeighborhood()) {
+                if (_map.getMap()[cord.x][cord.y]->getPermanentEntity()) {
+                    Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(_map.getMap()[cord.x][cord.y]->getPermanentEntity());
                     if (interactable) {
-                        for (auto ball : _balls) {
-                            interactable->interact(*ball);
-                        }
+                        interactable->interact(*ball);
+                    }
+                }
+                for (auto movingEntity : _map.getMap()[cord.x][cord.y]->getMovingEntities()) {
+                    Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(movingEntity);
+                    if (interactable) {
+                        interactable->interact(*ball);
                     }
                 }
             }
@@ -62,8 +74,8 @@ namespace InkBall::State {
         }
         for (auto tileRow : _map.getMap()) {
             for (auto tile : tileRow) {
-                if (tile->hasEntity()) {
-                    window.draw(*tile->getEntity());
+                if (tile->getPermanentEntity() != nullptr) {
+                    window.draw(*tile->getPermanentEntity());
                 }
             }
         }

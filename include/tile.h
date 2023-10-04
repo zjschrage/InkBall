@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <optional>
 #include "entity.h"
 #include "coordinate.h"
 
@@ -9,13 +8,16 @@ namespace InkBall::World {
 
     class Tile {
     public:
-        Tile(Coordinate c) : _coordinate(c), _entity(std::nullopt) {}
-        Tile(Coordinate c, Entities::Entity* e) : _coordinate(c), _entity(e) {}
-        bool hasEntity();
-        Entities::Entity* getEntity();
+        Tile(Coordinate c) : _coordinate(c), _permanentEntity(nullptr) {}
+        Tile(Coordinate c, Entities::Entity* e) : _coordinate(c), _permanentEntity(e) {}
+        Entities::Entity* getPermanentEntity();
+        std::vector<Entities::Entity*>& getMovingEntities();
+        void addMovingEntity(Entities::Entity* entity);
+        void removeMovingEntity(Entities::Entity* entity);
         
     private:
-        std::optional<Entities::Entity*> _entity;
+        Entities::Entity* _permanentEntity;
+        std::vector<Entities::Entity*> _movingEntities;
         Coordinate _coordinate;
 
     };

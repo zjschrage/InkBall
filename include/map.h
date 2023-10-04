@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "tile.h"
+#include "constants.h"
 
 namespace InkBall::World {
 
@@ -10,10 +11,9 @@ namespace InkBall::World {
     class Map {
     public:
         Map() {
-            _map = TileMap(17, std::vector<Tile*>(17, nullptr));
+            _map = TileMap(Constants::Map::MAP_SIZE, std::vector<Tile*>(Constants::Map::MAP_SIZE, nullptr));
         }
         void setTile(int i, int j, Tile* tile) { _map[i][j] = tile; }
-        void setMap(TileMap map) { _map = map; }
         const TileMap& getMap() { return _map; }
 
     private:
