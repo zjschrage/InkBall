@@ -1,6 +1,7 @@
 # Compiler and flags
 CXX := g++
 CXXFLAGS := -std=c++2a -Wall -Iinclude
+DEBUG := -g -O0
 SFML := -lsfml-graphics -lsfml-window -lsfml-system
 
 # Directories
@@ -24,12 +25,12 @@ all: $(TARGET)
 # Rule to compile object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $(SFML) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(SFML) $(DEBUG) -c $< -o $@
 
 # Rule to build the executable
 $(TARGET): $(OBJ_FILES)
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $(SFML) $^ -o $@
+	$(CXX) $(CXXFLAGS) $(SFML) $(DEBUG) $^ -o $@
 
 # Clean up object and executable files
 clean:

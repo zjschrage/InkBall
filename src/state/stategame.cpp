@@ -5,6 +5,8 @@
 
 namespace InkBall::State {
 
+    int cont = 0;
+
     void GameState::init() {
         auto ball0 = new Entities::Ball(sf::Vector2(500, 500));
         ball0->setVelocity(sf::Vector2(-3, 3));
@@ -12,12 +14,20 @@ namespace InkBall::State {
         auto ball1 = new Entities::Ball(sf::Vector2(400, 300));
         ball1->setVelocity(sf::Vector2(4, -3));
 
-        auto ball3 = new Entities::Ball(sf::Vector2(450, 200));
-        ball3->setVelocity(sf::Vector2(-2, -5));
+        auto ball2 = new Entities::Ball(sf::Vector2(450, 200));
+        ball2->setVelocity(sf::Vector2(-2, -5));
+
+        auto ball3 = new Entities::Ball(sf::Vector2(200, 200));
+        ball3->setVelocity(sf::Vector2(2, 3));
+
+        auto ball4 = new Entities::Ball(sf::Vector2(250, 200));
+        ball4->setVelocity(sf::Vector2(-2, 3));
 
         _balls.push_back(ball0);
         _balls.push_back(ball1);
+        _balls.push_back(ball2);
         _balls.push_back(ball3);
+        _balls.push_back(ball4);
 
         _map = World::LevelLoader::loadLevel(0);
 
@@ -36,23 +46,39 @@ namespace InkBall::State {
                     case sf::Keyboard::F4:
                         Statics::SHOW_CENTER = !Statics::SHOW_CENTER;
                         break;
+                    case sf::Keyboard::Space:
+                        cont += 1;
+                        break;
+                    case sf::Keyboard::X:
+                        cont += 5;
+                        break;
+                    case sf::Keyboard::Z:
+                        cont += 50;
+                        break;
                 }
             }
         }
     }
 
     void GameState::tick() {
+        if (!cont)
+            return;
+        cont--;
         for (auto* ball : _balls) {
-            World::Coordinate oldPosition = World::positionToCoordinate(ball->getPosition());
+            World::Coordinate oldCoordinate = World::positionToCoordinate(ball->getPosition());
             ball->move();
-            World::Coordinate newPosition = World::positionToCoordinate(ball->getPosition());
-            if (oldPosition != newPosition) {
-                _map.getMap()[oldPosition.x][oldPosition.y]->removeMovingEntity(ball);
-                _map.getMap()[newPosition.x][newPosition.y]->addMovingEntity(ball);
+            World::Coordinate newCoordinate = World::positionToCoordinate(ball->getPosition());
+            if (oldCoordinate != newCoordinate) {
+                char buffer[64];
+                sprintf(buffer, "(%d, %d) -> (%d, %d)", oldCoordinate.x, oldCoordinate.y, newCoordinate.x, newCoordinate.y);
+                std::cout << buffer << std::endl;
+                _map.getMap()[oldCoordinate.x][oldCoordinate.y]->removeMovingEntity(ball);
+                _map.getMap()[newCoordinate.x][newCoordinate.y]->addMovingEntity(ball);
             }
-            for (auto cord : newPosition.getNeighborhood()) {
-                if (_map.getMap()[cord.x][cord.y]->getPermanentEntity()) {
-                    Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(_map.getMap()[cord.x][cord.y]->getPermanentEntity());
+            for (auto cord : newCoordinate.getNeighborhood()) {
+                Entities::Entity* permanentEntity = _map.getMap()[cord.x][cord.y]->getPermanentEntity();
+                if (permanentEntity) {
+                    Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(permanentEntity);
                     if (interactable) {
                         interactable->interact(*ball);
                     }

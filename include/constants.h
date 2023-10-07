@@ -23,7 +23,7 @@ namespace InkBall::Constants {
     namespace General {
         constexpr const char* WINDOW_TITLE = "Inkball";
         const int WINDOW_SIZE = Map::MAP_SIZE * SprtSheet::TILE_SIZE * SprtSheet::SCALE;
-        const int FPS = 30;
+        const int FPS = 90;
         const int BALL_HITBOX_DIM = SprtSheet::SCALE * SprtSheet::BALL_TILE_SIZE;
         const int HITBOX_DIM = SprtSheet::SCALE * SprtSheet::TILE_SIZE;
     }

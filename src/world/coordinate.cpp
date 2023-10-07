@@ -8,10 +8,16 @@ namespace InkBall::World {
         std::vector<Coordinate> coordinates;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                coordinates.push_back(Coordinate(x + i, y + j));
+                Coordinate c = Coordinate(x + i, y + j);
+                if (c.isInBounds())
+                    coordinates.push_back(c);
             }
         }
         return coordinates;
+    }
+
+    bool Coordinate::isInBounds() {
+        return (x >= 0 && y >= 0 && x < Constants::Map::MAP_SIZE && y < Constants::Map::MAP_SIZE);
     }
 
     sf::Vector2<int> coordinateToPosition(Coordinate c) {
