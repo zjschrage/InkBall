@@ -60,9 +60,9 @@ namespace InkBall::State {
     }
 
     World::Coordinate GameState::tickBalls(Entities::Ball& ball) {
-        World::Coordinate oldCoordinate = World::positionToCoordinate(ball.getPosition());
+        auto oldCoordinate = World::positionToCoordinate(ball.getPosition());
         ball.move();
-        World::Coordinate newCoordinate = World::positionToCoordinate(ball.getPosition());
+        auto newCoordinate = World::positionToCoordinate(ball.getPosition());
         if (oldCoordinate != newCoordinate) {
             _map.getMap()[oldCoordinate.x][oldCoordinate.y]->removeMovingEntity(&ball);
             _map.getMap()[newCoordinate.x][newCoordinate.y]->addMovingEntity(&ball);
@@ -82,17 +82,17 @@ namespace InkBall::State {
         }
 
         while (!neighborhood.empty()) {
-            World::Coordinate cord = neighborhood.top();
+            auto cord = neighborhood.top();
             neighborhood.pop();
-            Entities::Entity* permanentEntity = _map.getMap()[cord.x][cord.y]->getPermanentEntity();
+            auto* permanentEntity = _map.getMap()[cord.x][cord.y]->getPermanentEntity();
             if (permanentEntity) {
-                Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(permanentEntity);
+                auto* interactable = dynamic_cast<Entities::IInteractable*>(permanentEntity);
                 if (interactable) {
                     interactable->interact(ball);
                 }
             }
             for (auto movingEntity : _map.getMap()[cord.x][cord.y]->getMovingEntities()) {
-                Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(movingEntity);
+                auto* interactable = dynamic_cast<Entities::IInteractable*>(movingEntity);
                 if (interactable) {
                     interactable->interact(ball);
                 }
