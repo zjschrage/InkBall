@@ -2,6 +2,9 @@
 #include "statics.h"
 #include "levelLoader.h"
 #include "iInteractable.h"
+#include "utils.h"
+
+#include <queue>
 
 namespace InkBall::State {
 
@@ -69,13 +72,22 @@ namespace InkBall::State {
             ball->move();
             World::Coordinate newCoordinate = World::positionToCoordinate(ball->getPosition());
             if (oldCoordinate != newCoordinate) {
-                char buffer[64];
-                sprintf(buffer, "(%d, %d) -> (%d, %d)", oldCoordinate.x, oldCoordinate.y, newCoordinate.x, newCoordinate.y);
-                std::cout << buffer << std::endl;
                 _map.getMap()[oldCoordinate.x][oldCoordinate.y]->removeMovingEntity(ball);
                 _map.getMap()[newCoordinate.x][newCoordinate.y]->addMovingEntity(ball);
             }
+            auto cmp = [&ball](World::Coordinate a, World::Coordinate b){
+                double d1 = Utils::distance(World::coordinateToPosition(a), ball->getPosition());
+                double d2 = Utils::distance(World::coordinateToPosition(b), ball->getPosition());
+                return d1 > d2;
+            };
+            std::priority_queue<World::Coordinate, std::vector<World::Coordinate>, decltype(cmp)> neighborhood(cmp);
             for (auto cord : newCoordinate.getNeighborhood()) {
+                neighborhood.push(cord);
+            }
+
+            while (!neighborhood.empty()) {
+                World::Coordinate cord = neighborhood.top();
+                neighborhood.pop();
                 Entities::Entity* permanentEntity = _map.getMap()[cord.x][cord.y]->getPermanentEntity();
                 if (permanentEntity) {
                     Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(permanentEntity);
