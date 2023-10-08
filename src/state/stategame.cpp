@@ -8,8 +8,6 @@
 
 namespace InkBall::State {
 
-    int cont = 0;
-
     void GameState::init() {
         auto ball0 = new Entities::Ball(sf::Vector2(500, 500));
         ball0->setVelocity(sf::Vector2(-3, 3));
@@ -49,57 +47,54 @@ namespace InkBall::State {
                     case sf::Keyboard::F4:
                         Statics::SHOW_CENTER = !Statics::SHOW_CENTER;
                         break;
-                    case sf::Keyboard::Space:
-                        cont += 1;
-                        break;
-                    case sf::Keyboard::X:
-                        cont += 5;
-                        break;
-                    case sf::Keyboard::Z:
-                        cont += 50;
-                        break;
                 }
             }
         }
     }
 
     void GameState::tick() {
-        if (!cont)
-            return;
-        cont--;
-        for (auto* ball : _balls) {
-            World::Coordinate oldCoordinate = World::positionToCoordinate(ball->getPosition());
-            ball->move();
-            World::Coordinate newCoordinate = World::positionToCoordinate(ball->getPosition());
-            if (oldCoordinate != newCoordinate) {
-                _map.getMap()[oldCoordinate.x][oldCoordinate.y]->removeMovingEntity(ball);
-                _map.getMap()[newCoordinate.x][newCoordinate.y]->addMovingEntity(ball);
-            }
-            auto cmp = [&ball](World::Coordinate a, World::Coordinate b){
-                double d1 = Utils::distance(World::coordinateToPosition(a), ball->getPosition());
-                double d2 = Utils::distance(World::coordinateToPosition(b), ball->getPosition());
-                return d1 > d2;
-            };
-            std::priority_queue<World::Coordinate, std::vector<World::Coordinate>, decltype(cmp)> neighborhood(cmp);
-            for (auto cord : newCoordinate.getNeighborhood()) {
-                neighborhood.push(cord);
-            }
+        for (auto ball : _balls) {
+            auto coordinate = tickBalls(*ball);
+            tickNeighborInteractions(*ball, coordinate);
+        }
+    }
 
-            while (!neighborhood.empty()) {
-                World::Coordinate cord = neighborhood.top();
-                neighborhood.pop();
-                Entities::Entity* permanentEntity = _map.getMap()[cord.x][cord.y]->getPermanentEntity();
-                if (permanentEntity) {
-                    Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(permanentEntity);
-                    if (interactable) {
-                        interactable->interact(*ball);
-                    }
+    World::Coordinate GameState::tickBalls(Entities::Ball& ball) {
+        World::Coordinate oldCoordinate = World::positionToCoordinate(ball.getPosition());
+        ball.move();
+        World::Coordinate newCoordinate = World::positionToCoordinate(ball.getPosition());
+        if (oldCoordinate != newCoordinate) {
+            _map.getMap()[oldCoordinate.x][oldCoordinate.y]->removeMovingEntity(&ball);
+            _map.getMap()[newCoordinate.x][newCoordinate.y]->addMovingEntity(&ball);
+        }
+        return newCoordinate;
+    }
+
+    void GameState::tickNeighborInteractions(Entities::Ball& ball, World::Coordinate& coordinate) {
+        auto cmp = [&ball](World::Coordinate a, World::Coordinate b){
+            double d1 = Utils::distance(World::coordinateToPosition(a), ball.getPosition());
+            double d2 = Utils::distance(World::coordinateToPosition(b), ball.getPosition());
+            return d1 > d2;
+        };
+        std::priority_queue<World::Coordinate, std::vector<World::Coordinate>, decltype(cmp)> neighborhood(cmp);
+        for (auto cord : coordinate.getNeighborhood()) {
+            neighborhood.push(cord);
+        }
+
+        while (!neighborhood.empty()) {
+            World::Coordinate cord = neighborhood.top();
+            neighborhood.pop();
+            Entities::Entity* permanentEntity = _map.getMap()[cord.x][cord.y]->getPermanentEntity();
+            if (permanentEntity) {
+                Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(permanentEntity);
+                if (interactable) {
+                    interactable->interact(ball);
                 }
-                for (auto movingEntity : _map.getMap()[cord.x][cord.y]->getMovingEntities()) {
-                    Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(movingEntity);
-                    if (interactable) {
-                        interactable->interact(*ball);
-                    }
+            }
+            for (auto movingEntity : _map.getMap()[cord.x][cord.y]->getMovingEntities()) {
+                Entities::IInteractable* interactable = dynamic_cast<Entities::IInteractable*>(movingEntity);
+                if (interactable) {
+                    interactable->interact(ball);
                 }
             }
         }

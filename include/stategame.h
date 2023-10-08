@@ -14,6 +14,10 @@ namespace InkBall::State {
         void handleEvents(sf::RenderWindow& window) override;
 
     private:
+        World::Coordinate tickBalls(Entities::Ball& ball);
+        void tickNeighborInteractions(Entities::Ball& ball, World::Coordinate& coordinate);
+
+    private:
         World::Map _map;
         std::vector<Entities::Ball*> _balls;
     };
