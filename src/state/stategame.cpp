@@ -41,10 +41,10 @@ namespace InkBall::State {
                 window.close();
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
-                    case sf::Keyboard::F3:
+                    case Constants::Keys::SHOW_HITBOX:
                         Statics::SHOW_HITBOX = !Statics::SHOW_HITBOX;
                         break;
-                    case sf::Keyboard::F4:
+                    case Constants::Keys::SHOW_CENTER:
                         Statics::SHOW_CENTER = !Statics::SHOW_CENTER;
                         break;
                 }

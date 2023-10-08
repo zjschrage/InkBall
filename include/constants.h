@@ -28,4 +28,9 @@ namespace InkBall::Constants {
         const int HITBOX_DIM = SprtSheet::SCALE * SprtSheet::TILE_SIZE;
     }
 
+    namespace Keys {
+        const int SHOW_HITBOX = sf::Keyboard::F3;
+        const int SHOW_CENTER = sf::Keyboard::F4;
+    }
+
 }
