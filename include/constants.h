@@ -10,6 +10,10 @@ namespace InkBall::Constants {
         const int BALL_TILE_SIZE = 24;
         const int TILE_SIZE = 32;
         const sf::IntRect WHITE_BALL = sf::IntRect(1, 375, BALL_TILE_SIZE, BALL_TILE_SIZE);
+        const sf::IntRect ORANGE_BALL = sf::IntRect(1 + (BALL_TILE_SIZE * 1), 375, BALL_TILE_SIZE, BALL_TILE_SIZE);
+        const sf::IntRect BLUE_BALL = sf::IntRect(1 + (BALL_TILE_SIZE * 2), 375, BALL_TILE_SIZE, BALL_TILE_SIZE);
+        const sf::IntRect GREEN_BALL = sf::IntRect(1 + (BALL_TILE_SIZE * 3), 375, BALL_TILE_SIZE, BALL_TILE_SIZE);
+        const sf::IntRect YELLOW_BALL = sf::IntRect(1 + (BALL_TILE_SIZE * 4), 375, BALL_TILE_SIZE, BALL_TILE_SIZE);
         const sf::IntRect WHITE_TILE = sf::IntRect(99, 1, TILE_SIZE, TILE_SIZE);
         const sf::IntRect EMPTY_TILE = sf::IntRect(1, 1, TILE_SIZE, TILE_SIZE);
         const sf::IntRect DISPENSER_TILE = sf::IntRect(1, 33, TILE_SIZE, TILE_SIZE);

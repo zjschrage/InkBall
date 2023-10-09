@@ -1,6 +1,7 @@
 #include "levelLoader.h"
 #include "constants.h"
 #include "wall.h"
+#include "air.h"
 #include "coordinate.h"
 
 namespace InkBall::World {
@@ -41,9 +42,9 @@ namespace InkBall::World {
         switch (c) {
             case 'X':
                 return new Tile(cord, new Entities::Wall(coordinateToPosition(cord), Entities::Color::WHITE));
-            case '0':
+            case ' ':
             default:
-                return new Tile(cord);
+                return new Tile(cord, new Entities::Air(coordinateToPosition(cord)));
         }
     }
 

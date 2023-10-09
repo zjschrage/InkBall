@@ -4,8 +4,8 @@
 
 namespace InkBall::Entities {
 
-    Ball::Ball(sf::Vector2<int> position) : Entity(position, Constants::General::BALL_HITBOX_DIM) {
-        _texture.loadFromFile(Constants::SprtSheet::SPRITESHEET_PATH, Constants::SprtSheet::WHITE_BALL);
+    Ball::Ball(sf::Vector2<int> position, Color color) : Entity(position, Constants::General::BALL_HITBOX_DIM) {
+        _texture.loadFromFile(Constants::SprtSheet::SPRITESHEET_PATH, colorToSheetMapping(color));
         _sprite.setTexture(_texture);
     }
 
@@ -43,6 +43,21 @@ namespace InkBall::Entities {
                 this->move();
                 mobile->move();
             }
+        }
+    }
+
+    sf::IntRect Ball::colorToSheetMapping(Color color) {
+        switch (color) {
+            case Color::WHITE:
+                return Constants::SprtSheet::WHITE_BALL;
+            case Color::ORANGE:
+                return Constants::SprtSheet::ORANGE_BALL;
+            case Color::BLUE:
+                return Constants::SprtSheet::BLUE_BALL;
+            case Color::GREEN:
+                return Constants::SprtSheet::GREEN_BALL;
+            case Color::YELLOW:
+                return Constants::SprtSheet::YELLOW_BALL;
         }
     }
 

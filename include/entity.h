@@ -28,7 +28,7 @@ namespace InkBall::Entities {
         ORANGE,
         BLUE,
         GREEN,
-        MAGENTA
+        YELLOW
     };
 
 }

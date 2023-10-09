@@ -9,19 +9,19 @@
 namespace InkBall::State {
 
     void GameState::init() {
-        auto ball0 = new Entities::Ball(sf::Vector2(500, 500));
+        auto ball0 = new Entities::Ball(sf::Vector2(500, 500), Entities::Color::WHITE);
         ball0->setVelocity(sf::Vector2(-3, 3));
 
-        auto ball1 = new Entities::Ball(sf::Vector2(400, 300));
+        auto ball1 = new Entities::Ball(sf::Vector2(400, 300), Entities::Color::ORANGE);
         ball1->setVelocity(sf::Vector2(4, -3));
 
-        auto ball2 = new Entities::Ball(sf::Vector2(450, 200));
+        auto ball2 = new Entities::Ball(sf::Vector2(450, 200), Entities::Color::BLUE);
         ball2->setVelocity(sf::Vector2(-2, -5));
 
-        auto ball3 = new Entities::Ball(sf::Vector2(200, 200));
+        auto ball3 = new Entities::Ball(sf::Vector2(200, 200), Entities::Color::GREEN);
         ball3->setVelocity(sf::Vector2(2, 3));
 
-        auto ball4 = new Entities::Ball(sf::Vector2(250, 200));
+        auto ball4 = new Entities::Ball(sf::Vector2(250, 200), Entities::Color::YELLOW);
         ball4->setVelocity(sf::Vector2(-2, 3));
 
         _balls.push_back(ball0);
@@ -30,7 +30,7 @@ namespace InkBall::State {
         _balls.push_back(ball3);
         _balls.push_back(ball4);
 
-        _map = World::LevelLoader::loadLevel(0);
+        _map = World::LevelLoader::loadLevel(1);
 
     }
 
@@ -102,15 +102,15 @@ namespace InkBall::State {
 
     void GameState::render(sf::RenderWindow& window) {
         window.clear();
-        for (auto ball : _balls) {
-            window.draw(*ball);
-        }
         for (auto tileRow : _map.getMap()) {
             for (auto tile : tileRow) {
                 if (tile->getPermanentEntity() != nullptr) {
                     window.draw(*tile->getPermanentEntity());
                 }
             }
+        }
+        for (auto ball : _balls) {
+            window.draw(*ball);
         }
         window.display();
     }
