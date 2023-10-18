@@ -31,6 +31,7 @@ namespace InkBall::State {
         _balls.push_back(ball4);
 
         _map = World::LevelLoader::loadLevel(1);
+        _inkPen = InkLayer::InkPen();
 
     }
 
@@ -47,6 +48,27 @@ namespace InkBall::State {
                     case Constants::Keys::SHOW_CENTER:
                         Statics::SHOW_CENTER = !Statics::SHOW_CENTER;
                         break;
+                }
+            }
+            if (event.type == sf::Event::MouseButtonPressed) {
+                switch (event.key.code) {
+                    case sf::Mouse::Left:
+                        _inkPen.penDown();
+                        break;
+                }
+            }
+            if (event.type == sf::Event::MouseButtonReleased) {
+                switch (event.key.code) {
+                    case sf::Mouse::Left:
+                        _inkPen.penUp();
+                        break;
+                }
+            }
+            if (event.type == sf::Event::MouseMoved) {
+                if (_inkPen.isPenDown()) {
+                    auto v = sf::Vertex(sf::Vector2f(event.mouseMove.x, event.mouseMove.y));
+                    _inkPen.addPoint(v);
+                    //std::cout << event.mouseMove.x << " " << event.mouseMove.y << std::endl;
                 }
             }
         }

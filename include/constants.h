@@ -37,4 +37,8 @@ namespace InkBall::Constants {
         const int SHOW_CENTER = sf::Keyboard::F4;
     }
 
+    namespace HyperParameters {
+        const double MIN_INK_SEGMENT_DISTANCE = 5;
+    }
+
 }

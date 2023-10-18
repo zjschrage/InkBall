@@ -4,6 +4,8 @@
 #include "ball.h"
 #include "wall.h"
 #include "map.h"
+#include "inkLayer.h"
+#include "inkPen.h"
 
 namespace InkBall::State {
     class GameState : public IState {
@@ -20,5 +22,7 @@ namespace InkBall::State {
     private:
         World::Map _map;
         std::vector<Entities::Ball*> _balls;
+        InkLayer::InkLayer _inkLayer;
+        InkLayer::InkPen _inkPen;
     };
 }
