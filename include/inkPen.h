@@ -11,7 +11,7 @@ namespace InkBall::InkLayer {
         void penDown();
         void penUp();
         bool isPenDown();
-        void addPoint(const sf::Vertex& point);
+        void addPoint(sf::Vertex point);
 
     private:
         bool _penDown = false;

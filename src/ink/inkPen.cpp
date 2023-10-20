@@ -21,14 +21,14 @@ namespace InkBall::InkLayer {
         return _penDown;
     }
 
-    void InkPen::addPoint(const sf::Vertex& point) {
+    void InkPen::addPoint(sf::Vertex point) {
         size_t num = _penPoints->getVertexCount();
-        auto last = (*_penPoints)[num-1];
-        double dist = Utils::distance(last.position, point.position);
-        std::cout << "Before" << std::endl;
-        if (dist < Constants::HyperParameters::MIN_INK_SEGMENT_DISTANCE)
-            return;
-        std::cout << "After" << std::endl;
+        if (num != 0) {
+            auto last = (*_penPoints)[num-1];
+            double dist = Utils::distance(last.position, point.position);
+            if (dist < Constants::HyperParameters::MIN_INK_SEGMENT_DISTANCE)
+                return;
+        }
         _penPoints->append(point);
         std::cout << point.position.x << " " << point.position.y << std::endl;
     }

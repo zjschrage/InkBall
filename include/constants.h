@@ -38,7 +38,7 @@ namespace InkBall::Constants {
     }
 
     namespace HyperParameters {
-        const double MIN_INK_SEGMENT_DISTANCE = 5;
+        const double MIN_INK_SEGMENT_DISTANCE = 10;
     }
 
 }
